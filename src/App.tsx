@@ -1,5 +1,4 @@
 import './App.scss';
-
 import usersFromServer from './api/users';
 import todosFromServer from './api/todos';
 import { ChangeEvent, useState } from 'react';
@@ -17,7 +16,7 @@ export const App = () => {
     event.preventDefault();
     let isValid = true;
 
-    if (!title) {
+    if (!title.trim()) {
       setErrorTitle('Please enter a title');
       isValid = false;
     } else {
@@ -37,10 +36,10 @@ export const App = () => {
 
     const newTodo: Todo = {
       id: Math.max(0, ...todos.map(todo => todo.id)) + 1,
-      title: title.replace(/[^a-zA-Z0-9\s]/g, ''),
+      title: title.trim().replace(/[^a-zA-Z0-9\s]/g, ''),
       completed: false,
       userId: Number(userId),
-      user: usersFromServer.find(user => user.id === Number(user)) as User,
+      user: usersFromServer.find(user => user.id === Number(userId)) as User,
     };
 
     setTodos([...todos, newTodo]);
@@ -90,12 +89,16 @@ export const App = () => {
           {errorUser && <span className="error">{errorUser}</span>}
         </div>
 
-        <button type="submit" data-cy="submitButton">
+        <button
+          type="submit"
+          data-cy="submitButton"
+          disabled={!title.trim() || !userId}
+        >
           Add
         </button>
       </form>
 
-      <TodoList todos={todos} />
+      <TodoList todos={todos} users={usersFromServer} />
     </div>
   );
 };

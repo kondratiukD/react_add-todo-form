@@ -1,14 +1,16 @@
 import { TodoInfo } from '../TodoInfo';
+import { Todo, User } from '../../types';
 
 interface Props {
   todos: Todo[];
+  users: User[];
 }
 
-export const TodoList = ({ todos }: Props) => {
+export const TodoList = ({ todos, users }: Props) => {
   return (
     <section className="TodoList">
       {todos.map(todo => (
-        <TodoInfo key={todo.id} todo={todo} />
+        <TodoInfo key={todo.id} todo={todo} users={users} />
       ))}
     </section>
   );

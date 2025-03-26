@@ -1,12 +1,13 @@
-import usersFromServer from '../../api/users';
 import { UserInfo } from '../UserInfo';
+import { Todo, User } from '../../types';
 
 interface Props {
   todo: Todo;
+  users: User[];
 }
 
-export const TodoInfo = ({ todo }: Props) => {
-  const user = usersFromServer.find(userId => userId.id === todo.userId);
+export const TodoInfo = ({ todo, users }: Props) => {
+  const foundUser = users.find(user => user.id === todo.userId);
 
   return (
     <article
@@ -15,7 +16,7 @@ export const TodoInfo = ({ todo }: Props) => {
     >
       <h2 className="TodoInfo__title">{todo.title}</h2>
 
-      {user && <UserInfo user={user} />}
+      {foundUser ? <UserInfo user={foundUser} /> : null}
     </article>
   );
 };
